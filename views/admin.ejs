@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Portal</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f9; padding: 40px; }
+        .container { max-width: 600px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin: auto; }
+        h2 { color: #333; text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; padding: 12px; width: 100%; border-radius: 4px; font-size: 16px; cursor: pointer; }
+        .alert-success { color: green; background: #e2f0d9; padding: 10px; margin-bottom: 15px; border-radius: 4px; }
+        .alert-error { color: red; background: #fce4d6; padding: 10px; margin-bottom: 15px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Custom Result Override</h2>
+        <% if(success) { %> <div class="alert-success"><%= success %></div> <% } %>
+        <% if(error) { %> <div class="alert-error"><%= error %></div> <% } %>
+        <form action="/api/admin/save-override" method="POST">
+            <div class="form-group">
+                <label>Admin Secret Key:</label>
+                <input type="password" name="secret" required>
+            </div>
+            <div class="form-group">
+                <label>Roll Number:</label>
+                <input type="text" name="roll_no" required>
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="text" name="password" required>
+            </div>
+            <div class="form-group">
+                <label>Student Name:</label>
+                <input type="text" name="student_name" required>
+            </div>
+            <div class="form-group">
+                <label>Results (JSON format):</label>
+                <textarea name="results_json" rows="4" required>[{"semester": "Fourth Semester", "pub_date": "05-01-2026", "action_label": "Grade Card"}]</textarea>
+            </div>
+            <button type="submit">Save Override</button>
+        </form>
+    </div>
+</body>
+</html>
