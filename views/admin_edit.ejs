@@ -18,12 +18,9 @@
     <div class="form-box">
         <h3>Upload Result PDF for Roll: <%= rollNo %></h3>
         <form action="/api/admin/save-override" method="POST" enctype="multipart/form-data">
-            <!-- Hidden field for roll number -->
             <input type="hidden" name="roll_no" value="<%= rollNo %>">
-            
             <label>Select Result File (PDF format only):</label>
             <input type="file" name="result_pdf" accept="application/pdf" required>
-            
             <button type="submit">Upload File to MongoDB</button>
         </form>
         <a href="/admin/dashboard" class="back-link">&larr; Back to Dashboard</a>
