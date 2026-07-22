@@ -2,26 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Student Dashboard</title>
+    <title>Admin Dashboard</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f9; }
-        .top-bar { background: #004080; color: white; padding: 15px 30px; display: flex; justify-content: space-between; }
-        .welcome { background: #00a8cc; color: white; padding: 10px 30px; font-weight: bold; }
-        .grid { display: flex; gap: 20px; padding: 40px; justify-content: center; }
-        .card { background: white; width: 140px; height: 120px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: #333; font-weight: bold; font-size: 13px; }
-        .card:hover { background: #f0f8ff; border: 1px solid #004080; }
+        body { font-family: Arial, sans-serif; background: #eef2f5; padding: 40px; margin: 0; text-align: center; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .roll-btn { display: block; background: #00a8cc; color: white; text-decoration: none; padding: 15px; margin: 15px 0; border-radius: 4px; font-size: 18px; font-weight: bold; }
+        .roll-btn:hover { background: #007a99; }
+        .success { background: #d4edda; color: #155724; padding: 10px; margin-bottom: 15px; border-radius: 4px; }
     </style>
 </head>
 <body>
-    <div class="top-bar">
-        <h3>MAKAUT Examination System</h3>
-        <a href="/" style="color:white; text-decoration:none; background:#d9534f; padding:6px 12px; border-radius:4px;">LOGOUT</a>
-    </div>
-    <div class="welcome">Welcome, <%= student.student_name.toUpperCase() %> (<%= student.roll_no %>)</div>
-    <div class="grid">
-        <a href="/smartexam/public/student/student-activity" class="card">
-            <span>📊</span><br>Result
-        </a>
+    <div class="container">
+        <h2>Target Overrides Dashboard</h2>
+        <p>Select the Roll Number you want to upload modified results for:</p>
+        
+        <% if(success) { %> <div class="success"><%= success %></div> <% } %>
+
+        <a href="/admin/edit/32342724111" class="roll-btn">Roll No: 32342724111</a>
+        <a href="/admin/edit/32342724048" class="roll-btn">Roll No: 32342724048</a>
+        
+        <br>
+        <a href="/" style="color: #666;">Return to Portal Home</a>
     </div>
 </body>
 </html>
