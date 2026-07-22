@@ -180,26 +180,25 @@ app.get('/student/view-pdf', async (req, res) => {
 });
 
 // --- Catch-All Proxy (Handles Admit Card, CA Marks, Exam Forms, etc.) ---
-app.all('/smartexam/public/student/*', async (req, res) => {
+// --- Dashboard Proxy ---
+app.get('/smartexam/public/student/dashboard', async (req, res) => {
+    const localSessionRoll = req.cookies.local_session;
+    
+    // If it's one of your two specific students, load your custom EJS dashboard
+    if (localSessionRoll) {
+        const student = await OverrideStudent.findOne({ roll_no: localSessionRoll });
+        if (student) return res.render('custom_dashboard', { student });
+    }
+
+    // For all normal students, fetch the REAL dashboard directly
     try {
         const cookieHeader = req.headers.cookie || '';
-        const axiosConfig = {
-            method: req.method,
-            url: 'https://makaut1.ucanapply.com' + req.originalUrl,
-            headers: { 'Cookie': cookieHeader, 'User-Agent': 'Mozilla/5.0' },
-            responseType: 'arraybuffer' // Handles images and PDFs seamlessly
-        };
-
-        if (req.method === 'POST') {
-            axiosConfig.data = new URLSearchParams(req.body);
-            axiosConfig.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-        }
-
-        const response = await axios(axiosConfig);
-        res.set('Content-Type', response.headers['content-type']);
-        res.send(response.data);
+        const officialResponse = await axios.get('https://makaut1.ucanapply.com/smartexam/public/student/dashboard', {
+            headers: { 'Cookie': cookieHeader, 'User-Agent': 'Mozilla/5.0' }
+        });
+        return res.send(officialResponse.data);
     } catch (err) {
-        res.status(500).send("Error connecting to official module.");
+        return res.redirect('/');
     }
 });
 
