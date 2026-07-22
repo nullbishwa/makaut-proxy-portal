@@ -5,22 +5,17 @@
     <title>Maulana Abul Kalam Azad University of Technology, West Bengal</title>
     <style>
         body { font-family: Arial, sans-serif; background: #eef2f5; margin: 0; padding: 0; }
-        
-        /* Top Header */
         .header { background: #fff; border-bottom: 3px solid #666; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .header-left { display: flex; align-items: center; gap: 15px; }
-        .header-logo { height: 45px; }
         .header-title { font-size: 13px; font-weight: bold; color: #00264d; line-height: 1.2; }
         .header-title span { font-size: 10px; font-weight: normal; color: #555; }
         .sys-title { font-size: 16px; font-weight: bold; color: #444; }
 
-        /* Main Dashboard Grid */
         .main-container { max-width: 1300px; margin: 25px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
         
         .portal-card { background: white; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 15px; display: flex; align-items: center; gap: 12px; border-left: 6px solid #8c8c8c; cursor: pointer; text-decoration: none; color: inherit; transition: 0.15s ease; }
         .portal-card:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.15); transform: translateY(-1px); }
         
-        /* Card Left Border & Accent Colors matching Screenshot 35 */
         .portal-card.student { border-left-color: #8c8c8c; }
         .portal-card.admin { border-left-color: #f0ad4e; }
         .portal-card.teacher { border-left-color: #d9534f; }
@@ -32,16 +27,13 @@
         .card-content h4 { margin: 0 0 4px 0; font-size: 14px; color: #222; font-weight: bold; }
         .card-content p { margin: 0; font-size: 11px; color: #666; }
 
-        /* Lower Section Layout (Instructions & Helpdesk) */
         .lower-section { max-width: 1300px; margin: 15px auto 60px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .panel-box { background: white; border: 1px solid #d1d5db; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .panel-header { background: #f5f5f5; border-bottom: 1px solid #d1d5db; padding: 8px 15px; font-size: 12px; font-weight: bold; color: #333; display: flex; align-items: center; gap: 8px; }
+        .panel-header { background: #f5f5f5; border-bottom: 1px solid #d1d5db; padding: 8px 15px; font-size: 12px; font-weight: bold; color: #333; }
         .panel-body { padding: 15px; font-size: 12px; color: #333; line-height: 1.5; }
         .helpdesk-section { margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
-        .helpdesk-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .helpdesk-title { font-weight: bold; color: #000; margin-bottom: 2px; }
 
-        /* Popup Modal Window (Screenshot 36 layout) */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
         .modal-box { background: white; width: 420px; border-radius: 4px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); overflow: hidden; }
         .modal-header { background: #337ab7; color: white; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; }
@@ -56,13 +48,11 @@
         .btn-submit { background: #4cae4c; }
         .btn-cancel { background: #d9534f; }
 
-        /* Footer Ticker */
-        .footer { background: #a91111; color: white; text-align: center; padding: 10px; position: fixed; bottom: 0; width: 100%; font-size: 12px; font-weight: bold; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); }
+        .footer { background: #a91111; color: white; text-align: center; padding: 10px; position: fixed; bottom: 0; width: 100%; font-size: 12px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <!-- Top Header -->
     <div class="header">
         <div class="header-left">
             <div class="header-title">
@@ -74,7 +64,6 @@
         <div class="sys-title">EXAMINATION SYSTEM</div>
     </div>
 
-    <!-- Dashboard Portal Grid Cards (Matching Screenshot 35) -->
     <div class="main-container">
         <!-- Student Login Card -->
         <div class="portal-card student" onclick="openModal()">
@@ -85,16 +74,15 @@
             </div>
         </div>
 
-        <!-- Administrator Login -->
-        <div class="portal-card admin" onclick="alert('Administrator Portal')">
+        <!-- Administrator Login - Links directly to your admin upload portal -->
+        <a href="/admin-portal" class="portal-card admin">
             <div class="card-icon">🏛️</div>
             <div class="card-content">
                 <h4>ADMINISTRATOR LOGIN</h4>
                 <p>To Login click here....</p>
             </div>
-        </div>
+        </a>
 
-        <!-- Teacher Login -->
         <div class="portal-card teacher" onclick="alert('Teacher Portal')">
             <div class="card-icon">👨‍🏫</div>
             <div class="card-content">
@@ -103,7 +91,6 @@
             </div>
         </div>
 
-        <!-- College Center Login -->
         <div class="portal-card college" onclick="alert('College Center Login')">
             <div class="card-icon">🏢</div>
             <div class="card-content">
@@ -112,7 +99,6 @@
             </div>
         </div>
 
-        <!-- Result Card -->
         <div class="portal-card result" onclick="alert('Result Portal')">
             <div class="card-icon">📄</div>
             <div class="card-content">
@@ -121,7 +107,6 @@
             </div>
         </div>
 
-        <!-- Help Desk Card -->
         <div class="portal-card help" onclick="alert('Helpdesk Portal')">
             <div class="card-icon">❓</div>
             <div class="card-content">
@@ -131,7 +116,6 @@
         </div>
     </div>
 
-    <!-- Lower Panels (Instructions & Technical Helpdesk Details) -->
     <div class="lower-section">
         <div class="panel-box">
             <div class="panel-header">📋 Instructions</div>
@@ -146,23 +130,17 @@
                 <div class="helpdesk-section">
                     <div class="helpdesk-title">For Online payment issues:</div>
                     Online Payment Related Issues : 8282071882<br>
-                    Email : sbiepay@sbi.co.in<br>
-                    <span style="color: #666; font-size: 11px;">24X7 customer care service : +91-22-2087 6123</span>
+                    Email : sbiepay@sbi.co.in
                 </div>
                 <div class="helpdesk-section">
                     <div class="helpdesk-title">For Technical issues:</div>
-                    Technical Helpdesk - 9836319994, 983602203<br>
-                    CA4 Exam Related Issues : 03340585123
-                </div>
-                <div class="helpdesk-section">
-                    <div class="helpdesk-title">Other:</div>
-                    Dept. of Controller Of Examinations / Transcript / Duplicate Grade Card / Duplicate Certificate : 9163095323
+                    Technical Helpdesk - 9836319994, 983602203
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Student Login Popup Modal (Matching Screenshot 36) -->
+    <!-- Student Login Popup Modal -->
     <div id="loginModal" class="modal-overlay">
         <div class="modal-box">
             <div class="modal-header">
@@ -173,11 +151,11 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>User Name</label>
-                        <input type="text" name="username" required placeholder="">
+                        <input type="text" name="username" required>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" name="password" required placeholder="">
+                        <input type="password" name="password" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -188,7 +166,6 @@
         </div>
     </div>
 
-    <!-- Footer Ticker -->
     <div class="footer">
         Maulana Abul Kalam Azad University of Technology Smart Examination System © 2026 - 2027
     </div>
