@@ -2,34 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Upload Result Data</title>
+    <title>Upload PDF Result</title>
     <style>
         body { font-family: Arial, sans-serif; background: #f4f6f9; padding: 30px; display: flex; justify-content: center; }
         .form-box { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
         h3 { color: #004080; margin-top: 0; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; margin-top: 15px; }
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        label { display: block; font-weight: bold; margin-bottom: 10px; margin-top: 15px; }
+        input[type="file"] { width: 100%; padding: 10px; border: 1px dashed #ccc; background: #fafafa; border-radius: 4px; box-sizing: border-box; cursor: pointer; }
         button { background: #4cae4c; color: white; border: none; padding: 12px; width: 100%; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        button:hover { background: #449d44; }
         .back-link { display: inline-block; margin-top: 15px; color: #337ab7; text-decoration: none; }
     </style>
 </head>
 <body>
     <div class="form-box">
-        <h3>Upload Data for Roll: <%= rollNo %></h3>
-        <form action="/api/admin/save-override" method="POST">
-            <!-- Hidden field to pass the roll number -->
+        <h3>Upload Result PDF for Roll: <%= rollNo %></h3>
+        <form action="/api/admin/save-override" method="POST" enctype="multipart/form-data">
+            <!-- Hidden field for roll number -->
             <input type="hidden" name="roll_no" value="<%= rollNo %>">
             
-            <label>Password / DOB for this Roll:</label>
-            <input type="text" name="password" value="<%= student ? student.password : '' %>" required>
+            <label>Select Result File (PDF format only):</label>
+            <input type="file" name="result_pdf" accept="application/pdf" required>
             
-            <label>Student Name:</label>
-            <input type="text" name="student_name" value="<%= student ? student.student_name : '' %>" required>
-            
-            <label>Modified Results Data (JSON):</label>
-            <textarea name="results_json" rows="6" required><%= student ? JSON.stringify(student.results) : '[{"semester": "Fourth Semester", "pub_date": "05-01-2026", "action_label": "Grade Card"}]' %></textarea>
-            
-            <button type="submit">Upload to MongoDB Server</button>
+            <button type="submit">Upload File to MongoDB</button>
         </form>
         <a href="/admin/dashboard" class="back-link">&larr; Back to Dashboard</a>
     </div>
