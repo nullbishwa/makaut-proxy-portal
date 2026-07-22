@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; }
+        .header { background: #004080; color: white; padding: 15px 30px; }
+        .container { max-width: 900px; margin: 40px auto; background: white; padding: 20px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+        th { background-color: #004080; color: white; }
+        .btn-grade { background: #00a8cc; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="header"><h2>Student Results Overview</h2></div>
+    <div class="container">
+        <h3>Registered Results List for: <%= student.student_name %></h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>SL. No</th>
+                    <th>Semester</th>
+                    <th>Publication Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% student.results.forEach((resItem, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= resItem.semester %></td>
+                        <td><%= resItem.pub_date %></td>
+                        <td><a href="#" class="btn-grade"><%= resItem.action_label %></a></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <br>
+        <a href="/smartexam/public/student/dashboard" style="color: #004080; text-decoration: none;">&larr; Back to Dashboard</a>
+    </div>
+</body>
+</html>
