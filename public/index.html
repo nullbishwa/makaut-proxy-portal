@@ -65,7 +65,6 @@
     </div>
 
     <div class="main-container">
-        <!-- Student Login Card -->
         <div class="portal-card student" onclick="openModal()">
             <div class="card-icon">👤</div>
             <div class="card-content">
@@ -74,7 +73,6 @@
             </div>
         </div>
 
-        <!-- Administrator Login - Links directly to your admin upload portal -->
         <a href="/admin-portal" class="portal-card admin">
             <div class="card-icon">🏛️</div>
             <div class="card-content">
@@ -140,7 +138,6 @@
         </div>
     </div>
 
-    <!-- Student Login Popup Modal -->
     <div id="loginModal" class="modal-overlay">
         <div class="modal-box">
             <div class="modal-header">
@@ -171,12 +168,8 @@
     </div>
 
     <script>
-        function openModal() {
-            document.getElementById('loginModal').style.display = 'flex';
-        }
-        function closeModal() {
-            document.getElementById('loginModal').style.display = 'none';
-        }
+        function openModal() { document.getElementById('loginModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('loginModal').style.display = 'none'; }
     </script>
 </body>
 </html>
