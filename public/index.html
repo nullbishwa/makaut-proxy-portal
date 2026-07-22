@@ -5,85 +5,159 @@
     <title>Maulana Abul Kalam Azad University of Technology, West Bengal</title>
     <style>
         body { font-family: Arial, sans-serif; background: #eef2f5; margin: 0; padding: 0; }
-        /* Header style matching screenshot */
-        .header { background: #fff; border-bottom: 3px solid #004080; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
-        .header img { height: 50px; }
-        .header-title { font-size: 14px; font-weight: bold; color: #00264d; line-height: 1.3; }
-        .sys-title { font-size: 18px; font-weight: bold; color: #555; }
         
-        /* Main Container Cards Grid */
-        .main-container { max-width: 1200px; margin: 30px auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 0 20px; }
-        .portal-card { background: white; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px; text-decoration: none; color: #333; display: flex; align-items: center; gap: 15px; border-left: 5px solid #004080; transition: 0.2s; cursor: pointer; }
-        .portal-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-        .portal-card.admin { border-left-color: #d9534f; }
-        .portal-card.teacher { border-left-color: #f0ad4e; }
-        .portal-card.result { border-left-color: #5bc0de; }
-        .portal-card h4 { margin: 0 0 5px 0; font-size: 16px; color: #004080; }
-        .portal-card p { margin: 0; font-size: 12px; color: #666; }
+        /* Top Header */
+        .header { background: #fff; border-bottom: 3px solid #666; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .header-logo { height: 45px; }
+        .header-title { font-size: 13px; font-weight: bold; color: #00264d; line-height: 1.2; }
+        .header-title span { font-size: 10px; font-weight: normal; color: #555; }
+        .sys-title { font-size: 16px; font-weight: bold; color: #444; }
+
+        /* Main Dashboard Grid */
+        .main-container { max-width: 1300px; margin: 25px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
         
-        /* Modal Popup Styling matching Screenshot 36 */
+        .portal-card { background: white; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 15px; display: flex; align-items: center; gap: 12px; border-left: 6px solid #8c8c8c; cursor: pointer; text-decoration: none; color: inherit; transition: 0.15s ease; }
+        .portal-card:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.15); transform: translateY(-1px); }
+        
+        /* Card Left Border & Accent Colors matching Screenshot 35 */
+        .portal-card.student { border-left-color: #8c8c8c; }
+        .portal-card.admin { border-left-color: #f0ad4e; }
+        .portal-card.teacher { border-left-color: #d9534f; }
+        .portal-card.college { border-left-color: #5bc0de; }
+        .portal-card.result { border-left-color: #5bc0de; background: #e8f4f8; }
+        .portal-card.help { border-left-color: #337ab7; background: #e8f4f8; }
+
+        .card-icon { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .card-content h4 { margin: 0 0 4px 0; font-size: 14px; color: #222; font-weight: bold; }
+        .card-content p { margin: 0; font-size: 11px; color: #666; }
+
+        /* Lower Section Layout (Instructions & Helpdesk) */
+        .lower-section { max-width: 1300px; margin: 15px auto 60px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .panel-box { background: white; border: 1px solid #d1d5db; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .panel-header { background: #f5f5f5; border-bottom: 1px solid #d1d5db; padding: 8px 15px; font-size: 12px; font-weight: bold; color: #333; display: flex; align-items: center; gap: 8px; }
+        .panel-body { padding: 15px; font-size: 12px; color: #333; line-height: 1.5; }
+        .helpdesk-section { margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        .helpdesk-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .helpdesk-title { font-weight: bold; color: #000; margin-bottom: 2px; }
+
+        /* Popup Modal Window (Screenshot 36 layout) */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-box { background: white; width: 400px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); overflow: hidden; animation: fadeIn 0.3s ease; }
-        .modal-header { background: #337ab7; color: white; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
-        .modal-close { background: none; border: none; color: white; font-size: 16px; cursor: pointer; }
+        .modal-box { background: white; width: 420px; border-radius: 4px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); overflow: hidden; }
+        .modal-header { background: #337ab7; color: white; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; }
+        .modal-close { background: none; border: none; color: white; font-size: 18px; cursor: pointer; }
         .modal-body { padding: 20px; }
         .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 13px; font-weight: bold; color: #333; margin-bottom: 5px; }
+        .form-group label { display: block; font-size: 12px; font-weight: bold; color: #333; margin-bottom: 5px; }
         .form-group label::after { content: " *"; color: red; }
-        .form-group input { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 3px; box-sizing: border-box; }
-        .modal-footer { padding: 10px 20px; background: #f5f5f5; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #ddd; }
-        .btn { padding: 6px 14px; border: none; border-radius: 3px; font-weight: bold; cursor: pointer; color: white; }
+        .form-group input { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 3px; box-sizing: border-box; font-size: 13px; }
+        .modal-footer { padding: 10px 15px; background: #f5f5f5; display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #ddd; }
+        .btn { padding: 6px 14px; border: none; border-radius: 3px; font-size: 12px; font-weight: bold; cursor: pointer; color: white; }
         .btn-submit { background: #4cae4c; }
         .btn-cancel { background: #d9534f; }
-        
-        /* Footer */
-        .footer { background: #a91111; color: white; text-align: center; padding: 10px; position: fixed; bottom: 0; width: 100%; font-size: 13px; font-weight: bold; }
+
+        /* Footer Ticker */
+        .footer { background: #a91111; color: white; text-align: center; padding: 10px; position: fixed; bottom: 0; width: 100%; font-size: 12px; font-weight: bold; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 
     <!-- Top Header -->
     <div class="header">
-        <div style="display: flex; align-items: center; gap: 15px;">
+        <div class="header-left">
             <div class="header-title">
                 Maulana Abul Kalam Azad University of Technology, West Bengal<br>
-                <span style="font-size: 11px; font-weight: normal; color: #555;">Formerly known as West Bengal University of Technology</span>
+                <span>Formerly known as West Bengal University of Technology</span><br>
+                <span style="font-size: 9px; color: #666;">Main Campus: NH-12 (Old NH-34) Simhat, Haringhata, Nadia, Pin - 741249, West Bengal<br>City Office: BF 142, Sector 1, Salt Lake City, Kolkata - 700064</span>
             </div>
         </div>
         <div class="sys-title">EXAMINATION SYSTEM</div>
     </div>
 
-    <!-- Dashboard Portal Grid Tiles (Matching Screenshot 35) -->
+    <!-- Dashboard Portal Grid Cards (Matching Screenshot 35) -->
     <div class="main-container">
-        <!-- Student Login Card (Triggers Modal) -->
-        <div class="portal-card" onclick="openModal()">
-            <div>
+        <!-- Student Login Card -->
+        <div class="portal-card student" onclick="openModal()">
+            <div class="card-icon">👤</div>
+            <div class="card-content">
                 <h4>STUDENT</h4>
                 <p>Click here to Login Portal</p>
             </div>
         </div>
 
         <!-- Administrator Login -->
-        <div class="portal-card admin" onclick="alert('Administrator Portal Login')">
-            <div>
+        <div class="portal-card admin" onclick="alert('Administrator Portal')">
+            <div class="card-icon">🏛️</div>
+            <div class="card-content">
                 <h4>ADMINISTRATOR LOGIN</h4>
                 <p>To Login click here....</p>
             </div>
         </div>
 
         <!-- Teacher Login -->
-        <div class="portal-card teacher" onclick="alert('Teacher Portal Login')">
-            <div>
+        <div class="portal-card teacher" onclick="alert('Teacher Portal')">
+            <div class="card-icon">👨‍🏫</div>
+            <div class="card-content">
                 <h4>TEACHER / EVALUATOR</h4>
                 <p>To Login click here....</p>
             </div>
         </div>
 
-        <!-- Result Portal -->
+        <!-- College Center Login -->
+        <div class="portal-card college" onclick="alert('College Center Login')">
+            <div class="card-icon">🏢</div>
+            <div class="card-content">
+                <h4>COLLEGE-CENTER LOGIN</h4>
+                <p>To Login click here....</p>
+            </div>
+        </div>
+
+        <!-- Result Card -->
         <div class="portal-card result" onclick="alert('Result Portal')">
-            <div>
+            <div class="card-icon">📄</div>
+            <div class="card-content">
                 <h4>RESULT</h4>
                 <p>Click Here to See Result Details ....</p>
+            </div>
+        </div>
+
+        <!-- Help Desk Card -->
+        <div class="portal-card help" onclick="alert('Helpdesk Portal')">
+            <div class="card-icon">❓</div>
+            <div class="card-content">
+                <h4>HelpDesk</h4>
+                <p>Click Here ....</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lower Panels (Instructions & Technical Helpdesk Details) -->
+    <div class="lower-section">
+        <div class="panel-box">
+            <div class="panel-header">📋 Instructions</div>
+            <div class="panel-body">
+                <p style="color: #666; font-style: italic; margin: 0;">Please read all system guidelines and notifications carefully before submitting forms or checking examination results.</p>
+            </div>
+        </div>
+
+        <div class="panel-box">
+            <div class="panel-header">📞 Technical Helpdesk Details</div>
+            <div class="panel-body">
+                <div class="helpdesk-section">
+                    <div class="helpdesk-title">For Online payment issues:</div>
+                    Online Payment Related Issues : 8282071882<br>
+                    Email : sbiepay@sbi.co.in<br>
+                    <span style="color: #666; font-size: 11px;">24X7 customer care service : +91-22-2087 6123</span>
+                </div>
+                <div class="helpdesk-section">
+                    <div class="helpdesk-title">For Technical issues:</div>
+                    Technical Helpdesk - 9836319994, 983602203<br>
+                    CA4 Exam Related Issues : 03340585123
+                </div>
+                <div class="helpdesk-section">
+                    <div class="helpdesk-title">Other:</div>
+                    Dept. of Controller Of Examinations / Transcript / Duplicate Grade Card / Duplicate Certificate : 9163095323
+                </div>
             </div>
         </div>
     </div>
@@ -95,16 +169,15 @@
                 <span>Student Login Portal</span>
                 <button class="modal-close" onclick="closeModal()">×</button>
             </div>
-            <!-- Form points to your backend route which intercepts or proxies -->
             <form action="/smartexam/public/student-login" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
                         <label>User Name</label>
-                        <input type="text" name="username" required placeholder="Enter Roll Number">
+                        <input type="text" name="username" required placeholder="">
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" name="password" required placeholder="Enter Password">
+                        <input type="password" name="password" required placeholder="">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -115,7 +188,7 @@
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer Ticker -->
     <div class="footer">
         Maulana Abul Kalam Azad University of Technology Smart Examination System © 2026 - 2027
     </div>
