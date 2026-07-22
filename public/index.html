@@ -1,56 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Maulana Abul Kalam Azad University of Technology, West Bengal</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #eef2f5; margin: 0; padding: 0; }
-        .header { background: #fff; border-bottom: 3px solid #666; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .header-left { display: flex; align-items: center; gap: 15px; }
-        .header-title { font-size: 13px; font-weight: bold; color: #00264d; line-height: 1.2; }
-        .header-title span { font-size: 10px; font-weight: normal; color: #555; }
-        .sys-title { font-size: 16px; font-weight: bold; color: #444; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f5;
+            margin: 0;
+            padding: 0;
+        }
 
-        .main-container { max-width: 1300px; margin: 25px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        
-        .portal-card { background: white; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 15px; display: flex; align-items: center; gap: 12px; border-left: 6px solid #8c8c8c; cursor: pointer; text-decoration: none; color: inherit; transition: 0.15s ease; }
-        .portal-card:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.15); transform: translateY(-1px); }
-        
-        .portal-card.student { border-left-color: #8c8c8c; }
-        .portal-card.admin { border-left-color: #f0ad4e; }
-        .portal-card.teacher { border-left-color: #d9534f; }
-        .portal-card.college { border-left-color: #5bc0de; }
-        .portal-card.result { border-left-color: #5bc0de; background: #e8f4f8; }
-        .portal-card.help { border-left-color: #337ab7; background: #e8f4f8; }
+        .header {
+            background: #fff;
+            border-bottom: 3px solid #666;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
 
-        .card-icon { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-        .card-content h4 { margin: 0 0 4px 0; font-size: 14px; color: #222; font-weight: bold; }
-        .card-content p { margin: 0; font-size: 11px; color: #666; }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-        .lower-section { max-width: 1300px; margin: 15px auto 60px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .panel-box { background: white; border: 1px solid #d1d5db; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .panel-header { background: #f5f5f5; border-bottom: 1px solid #d1d5db; padding: 8px 15px; font-size: 12px; font-weight: bold; color: #333; }
-        .panel-body { padding: 15px; font-size: 12px; color: #333; line-height: 1.5; }
-        .helpdesk-section { margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
-        .helpdesk-title { font-weight: bold; color: #000; margin-bottom: 2px; }
+        .header-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #00264d;
+            line-height: 1.2;
+        }
 
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-box { background: white; width: 420px; border-radius: 4px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); overflow: hidden; }
-        .modal-header { background: #337ab7; color: white; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; }
-        .modal-close { background: none; border: none; color: white; font-size: 18px; cursor: pointer; }
-        .modal-body { padding: 20px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 12px; font-weight: bold; color: #333; margin-bottom: 5px; }
-        .form-group label::after { content: " *"; color: red; }
-        .form-group input { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 3px; box-sizing: border-box; font-size: 13px; }
-        .modal-footer { padding: 10px 15px; background: #f5f5f5; display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #ddd; }
-        .btn { padding: 6px 14px; border: none; border-radius: 3px; font-size: 12px; font-weight: bold; cursor: pointer; color: white; }
-        .btn-submit { background: #4cae4c; }
-        .btn-cancel { background: #d9534f; }
+        .header-title span {
+            font-size: 10px;
+            font-weight: normal;
+            color: #555;
+        }
 
-        .footer { background: #a91111; color: white; text-align: center; padding: 10px; position: fixed; bottom: 0; width: 100%; font-size: 12px; font-weight: bold; }
+        .sys-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .main-container {
+            max-width: 1300px;
+            margin: 25px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .portal-card {
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 6px solid #8c8c8c;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            transition: 0.15s ease;
+        }
+
+        .portal-card:hover {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .portal-card.student {
+            border-left-color: #8c8c8c;
+        }
+
+        .portal-card.admin {
+            border-left-color: #f0ad4e;
+        }
+
+        .portal-card.teacher {
+            border-left-color: #d9534f;
+        }
+
+        .portal-card.college {
+            border-left-color: #5bc0de;
+        }
+
+        .portal-card.result {
+            border-left-color: #5bc0de;
+            background: #e8f4f8;
+        }
+
+        .portal-card.help {
+            border-left-color: #337ab7;
+            background: #e8f4f8;
+        }
+
+        .card-icon {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .card-content h4 {
+            margin: 0 0 4px 0;
+            font-size: 14px;
+            color: #222;
+            font-weight: bold;
+        }
+
+        .card-content p {
+            margin: 0;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .lower-section {
+            max-width: 1300px;
+            margin: 15px auto 60px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .panel-box {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .panel-header {
+            background: #f5f5f5;
+            border-bottom: 1px solid #d1d5db;
+            padding: 8px 15px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .panel-body {
+            padding: 15px;
+            font-size: 12px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .helpdesk-section {
+            margin-bottom: 12px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .helpdesk-title {
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 2px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-box {
+            background: white;
+            width: 420px;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: #337ab7;
+            color: white;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group label::after {
+            content: " *";
+            color: red;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-size: 13px;
+        }
+
+        .modal-footer {
+            padding: 10px 15px;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            border-top: 1px solid #ddd;
+        }
+
+        .btn {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+        }
+
+        .btn-submit {
+            background: #4cae4c;
+        }
+
+        .btn-cancel {
+            background: #d9534f;
+        }
+
+        .footer {
+            background: #a91111;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 12px;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
 
     <div class="header">
@@ -58,7 +286,8 @@
             <div class="header-title">
                 Maulana Abul Kalam Azad University of Technology, West Bengal<br>
                 <span>Formerly known as West Bengal University of Technology</span><br>
-                <span style="font-size: 9px; color: #666;">Main Campus: NH-12 (Old NH-34) Simhat, Haringhata, Nadia, Pin - 741249, West Bengal<br>City Office: BF 142, Sector 1, Salt Lake City, Kolkata - 700064</span>
+                <span style="font-size: 9px; color: #666;">Main Campus: NH-12 (Old NH-34) Simhat, Haringhata, Nadia, Pin
+                    - 741249, West Bengal<br>City Office: BF 142, Sector 1, Salt Lake City, Kolkata - 700064</span>
             </div>
         </div>
         <div class="sys-title">EXAMINATION SYSTEM</div>
@@ -118,7 +347,8 @@
         <div class="panel-box">
             <div class="panel-header">📋 Instructions</div>
             <div class="panel-body">
-                <p style="color: #666; font-style: italic; margin: 0;">Please read all system guidelines and notifications carefully before submitting forms or checking examination results.</p>
+                <p style="color: #666; font-style: italic; margin: 0;">Please read all system guidelines and
+                    notifications carefully before submitting forms or checking examination results.</p>
             </div>
         </div>
 
@@ -166,10 +396,29 @@
     <div class="footer">
         Maulana Abul Kalam Azad University of Technology Smart Examination System © 2026 - 2027
     </div>
-
+    <!-- Custom Error Modal matching Screenshot 45 -->
+    <div id="errorModal" class="modal-overlay" style="display: none; z-index: 9999;">
+        <div class="modal-box" style="width: 450px; border-radius: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
+            <div class="modal-header"
+                style="background: #4fc3f7; color: white; padding: 12px 15px; border-bottom: none; display: flex; justify-content: space-between;">
+                <span style="font-weight: normal; font-size: 14px;">Error</span>
+                <button class="modal-close" onclick="closeErrorModal()"
+                    style="font-size: 20px; opacity: 0.8; font-weight: bold;">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 25px 20px; font-size: 12px; color: #333; background: #fff;">
+                Invalid Password / Your account is not activated / Login Credentials Has been Locked.
+            </div>
+            <div class="modal-footer"
+                style="padding: 10px 15px; background: #f5f5f5; border-top: 1px solid #e5e5e5; display: flex; justify-content: flex-end;">
+                <button class="btn btn-submit" onclick="closeErrorModal()"
+                    style="background: #428bca; color: white; padding: 6px 20px; border-radius: 3px;">OK</button>
+            </div>
+        </div>
+    </div>
     <script>
         function openModal() { document.getElementById('loginModal').style.display = 'flex'; }
         function closeModal() { document.getElementById('loginModal').style.display = 'none'; }
     </script>
 </body>
+
 </html>
