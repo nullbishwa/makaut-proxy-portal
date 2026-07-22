@@ -2,32 +2,131 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Examination System - MAKAUT Proxy</title>
+    <title>Maulana Abul Kalam Azad University of Technology, West Bengal</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #eef2f5; margin: 0; padding: 40px; }
-        .box { max-width: 450px; background: white; margin: auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2 { color: #004080; text-align: center; }
+        body { font-family: Arial, sans-serif; background: #eef2f5; margin: 0; padding: 0; }
+        /* Header style matching screenshot */
+        .header { background: #fff; border-bottom: 3px solid #004080; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
+        .header img { height: 50px; }
+        .header-title { font-size: 14px; font-weight: bold; color: #00264d; line-height: 1.3; }
+        .sys-title { font-size: 18px; font-weight: bold; color: #555; }
+        
+        /* Main Container Cards Grid */
+        .main-container { max-width: 1200px; margin: 30px auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 0 20px; }
+        .portal-card { background: white; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px; text-decoration: none; color: #333; display: flex; align-items: center; gap: 15px; border-left: 5px solid #004080; transition: 0.2s; cursor: pointer; }
+        .portal-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .portal-card.admin { border-left-color: #d9534f; }
+        .portal-card.teacher { border-left-color: #f0ad4e; }
+        .portal-card.result { border-left-color: #5bc0de; }
+        .portal-card h4 { margin: 0 0 5px 0; font-size: 16px; color: #004080; }
+        .portal-card p { margin: 0; font-size: 12px; color: #666; }
+        
+        /* Modal Popup Styling matching Screenshot 36 */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-box { background: white; width: 400px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); overflow: hidden; animation: fadeIn 0.3s ease; }
+        .modal-header { background: #337ab7; color: white; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
+        .modal-close { background: none; border: none; color: white; font-size: 16px; cursor: pointer; }
+        .modal-body { padding: 20px; }
         .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; }
-        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { background: #004080; color: white; border: none; padding: 12px; width: 100%; border-radius: 4px; font-size: 16px; cursor: pointer; }
-        button:hover { background: #00264d; }
+        .form-group label { display: block; font-size: 13px; font-weight: bold; color: #333; margin-bottom: 5px; }
+        .form-group label::after { content: " *"; color: red; }
+        .form-group input { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 3px; box-sizing: border-box; }
+        .modal-footer { padding: 10px 20px; background: #f5f5f5; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #ddd; }
+        .btn { padding: 6px 14px; border: none; border-radius: 3px; font-weight: bold; cursor: pointer; color: white; }
+        .btn-submit { background: #4cae4c; }
+        .btn-cancel { background: #d9534f; }
+        
+        /* Footer */
+        .footer { background: #a91111; color: white; text-align: center; padding: 10px; position: fixed; bottom: 0; width: 100%; font-size: 13px; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h2>Student Login Portal</h2>
-        <form action="/smartexam/public/student-login" method="POST">
-            <div class="form-group">
-                <label>User Name:</label>
-                <input type="text" name="username" placeholder="Enter Roll Number" required>
+
+    <!-- Top Header -->
+    <div class="header">
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="header-title">
+                Maulana Abul Kalam Azad University of Technology, West Bengal<br>
+                <span style="font-size: 11px; font-weight: normal; color: #555;">Formerly known as West Bengal University of Technology</span>
             </div>
-            <div class="form-group">
-                <label>Password:</label>
-                <input type="password" name="password" placeholder="Enter Password / DOB" required>
-            </div>
-            <button type="submit">Submit</button>
-        </form>
+        </div>
+        <div class="sys-title">EXAMINATION SYSTEM</div>
     </div>
+
+    <!-- Dashboard Portal Grid Tiles (Matching Screenshot 35) -->
+    <div class="main-container">
+        <!-- Student Login Card (Triggers Modal) -->
+        <div class="portal-card" onclick="openModal()">
+            <div>
+                <h4>STUDENT</h4>
+                <p>Click here to Login Portal</p>
+            </div>
+        </div>
+
+        <!-- Administrator Login -->
+        <div class="portal-card admin" onclick="alert('Administrator Portal Login')">
+            <div>
+                <h4>ADMINISTRATOR LOGIN</h4>
+                <p>To Login click here....</p>
+            </div>
+        </div>
+
+        <!-- Teacher Login -->
+        <div class="portal-card teacher" onclick="alert('Teacher Portal Login')">
+            <div>
+                <h4>TEACHER / EVALUATOR</h4>
+                <p>To Login click here....</p>
+            </div>
+        </div>
+
+        <!-- Result Portal -->
+        <div class="portal-card result" onclick="alert('Result Portal')">
+            <div>
+                <h4>RESULT</h4>
+                <p>Click Here to See Result Details ....</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Login Popup Modal (Matching Screenshot 36) -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span>Student Login Portal</span>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <!-- Form points to your backend route which intercepts or proxies -->
+            <form action="/smartexam/public/student-login" method="POST">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>User Name</label>
+                        <input type="text" name="username" required placeholder="Enter Roll Number">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" required placeholder="Enter Password">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-submit">Submit</button>
+                    <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        Maulana Abul Kalam Azad University of Technology Smart Examination System © 2026 - 2027
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
