@@ -2,104 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard - MAKAUT</title>
+    <title>Admin Dashboard</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #fff; }
-        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 5px 20px; border-bottom: 2px solid #00a8cc; }
-        .logo-area { display: flex; align-items: center; gap: 10px; font-size: 11px; color: #00264d; font-weight: bold; }
-        .nav-buttons a { text-decoration: none; padding: 6px 12px; font-size: 11px; font-weight: bold; border-radius: 3px; border: 1px solid #ccc; color: #333; margin-left: 5px; }
-        .nav-buttons .btn-dash { background: #f8f9fa; }
-        .nav-buttons .btn-pass { background: #f0ad4e; color: white; border-color: #eea236; }
-        .nav-buttons .btn-logout { background: #d9534f; color: white; border-color: #d43f3a; }
-        
-        .header-banner { display: flex; justify-content: flex-end; align-items: center; padding: 0 20px; }
-        .session-box { background: #00a8cc; color: white; padding: 15px 60px; font-size: 24px; font-weight: bold; }
-        .welcome-bar { background: #5bc0de; color: white; text-align: right; padding: 5px 20px; font-size: 12px; font-weight: bold; margin-bottom: 20px; }
-        
-        .main-content { display: flex; max-width: 1300px; margin: 0 auto; padding: 0 20px; gap: 30px; }
-        .icons-grid { flex: 3; display: flex; flex-wrap: wrap; gap: 20px; justify-content: flex-start; }
-        .icon-card { width: 90px; text-align: center; text-decoration: none; color: #333; font-size: 11px; cursor: pointer; }
-        .icon-box { background: #00a8cc; width: 60px; height: 60px; margin: 0 auto 8px auto; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; box-shadow: 0 3px 6px rgba(0,0,0,0.16); transition: 0.2s; }
-        .icon-card:hover .icon-box { transform: scale(1.05); }
-        
-        .side-panels { flex: 1; display: flex; flex-direction: column; gap: 20px; }
-        .panel { padding: 15px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-        .panel-red { background: #f9e2e2; color: #a94442; border: 1px solid #ebccd1; }
-        .panel-green { background: #dff0d8; color: #3c763d; border: 1px solid #d6e9c6; }
-        .online-exam-box { text-align: center; margin: 20px 0; }
-        .online-exam-icon { background: #d9534f; width: 60px; height: 60px; margin: 0 auto 10px auto; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; }
-        
-        .footer { background: #0080aa; color: white; padding: 10px 20px; display: flex; justify-content: space-between; font-size: 11px; position: fixed; bottom: 0; width: 100%; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #eef2f5; padding: 40px; margin: 0; text-align: center; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .roll-btn { display: block; background: #00a8cc; color: white; text-decoration: none; padding: 15px; margin: 15px 0; border-radius: 4px; font-size: 18px; font-weight: bold; }
+        .roll-btn:hover { background: #007a99; }
+        .success { background: #d4edda; color: #155724; padding: 10px; margin-bottom: 15px; border-radius: 4px; }
     </style>
 </head>
 <body>
-    <div class="top-nav">
-        <div class="logo-area">
-            <div>
-                Maulana Abul Kalam Azad University of Technology, West Bengal<br>
-                <span style="font-weight: normal; font-size: 9px; color: #666;">Formerly known as West Bengal University of Technology</span>
-            </div>
-        </div>
-        <div class="nav-buttons">
-            <a href="#" class="btn-dash">🏠 DASHBOARD</a>
-            <a href="#" class="btn-pass">🔑 CHANGE PASSWORD</a>
-            <a href="/" class="btn-logout">⏻ LOGOUT</a>
-        </div>
-    </div>
-    <div class="header-banner">
-        <div style="font-size: 10px; color: #666; margin-right: 20px; text-align: right;">Helpline:<br>Email Id:</div>
-        <div class="session-box">2025-26</div>
-    </div>
-    <div class="welcome-bar">
-        Welcome <%= student.student_name %>
-    </div>
-    <div class="main-content">
-        <div class="icons-grid">
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Regular Enrollment Form</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Backlog Enrollment Form</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>CA Marks</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>PCA Marks</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Exam Form</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Backlog Form</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Mar</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Moocs For Honors</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Mentor</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Student Backlog Papers</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Admit Card</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Special Supplementary Form</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Review Form</a>
-            
-            <a href="/smartexam/public/student/student-activity" class="icon-card">
-                <div class="icon-box">📄</div>Result
-            </a>
-            
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Review Result</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Special Supplementary Result</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Mobile/Email Update</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Student Basic Details</a>
-            <a href="#" class="icon-card" style="margin-left: 110px;"><div class="icon-box">📄</div>Special Supplementary Form</a>
-            <a href="#" class="icon-card"><div class="icon-box">📄</div>Update ABC Id</a>
-            <a href="#" class="icon-card"><div class="icon-box">👁️</div>Form Preview</a>
-            <a href="#" class="icon-card"><div class="icon-box">💸</div>Make Payment</a>
-        </div>
-        <div class="side-panels">
-            <div class="panel panel-red">
-                For Payment Issues Call : +91 8282071882<br>
-                For CA4 Exam Related Issues Call : 03340585123
-            </div>
-            <div class="online-exam-box">
-                <div class="online-exam-icon">📄</div>
-                <div style="font-size: 11px; font-weight: bold;">ONLINE EXAM</div>
-            </div>
-            <div class="panel panel-green">
-                Upload accurate details as this Photo may be used for generating your Admit Card, Grade Cards, Certificate etc.<br>
-                <a href="#" style="color: #31708f; text-decoration: none; font-weight: normal;">Click here to See Details</a>
-            </div>
-        </div>
-    </div>
-    <div class="footer">
-        <div>For the best view use Mozilla Firefox, Google Chrome browser</div>
-        <div>Copyright © 2026, Maulana Abul Kalam Azad University of Technology. All right reserved.</div>
+    <div class="container">
+        <h2>Target Overrides Dashboard</h2>
+        <p>Select the Roll Number you want to upload modified results for:</p>
+        
+        <% if(success) { %> <div class="success"><%= success %></div> <% } %>
+
+        <a href="/admin/edit/32342724111" class="roll-btn">Roll No: 32342724111</a>
+        <a href="/admin/edit/32342724048" class="roll-btn">Roll No: 32342724048</a>
+        
+        <br><br>
+        <a href="/" style="color: #666; text-decoration: none;">&larr; Return to Portal Home</a>
     </div>
 </body>
 </html>
