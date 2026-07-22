@@ -2,43 +2,106 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Student Results</title>
+    <title>Student Results - MAKAUT</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; }
-        .header { background: #004080; color: white; padding: 15px 30px; }
-        .container { max-width: 900px; margin: 40px auto; background: white; padding: 20px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
-        th { background-color: #004080; color: white; }
-        .btn-grade { background: #00a8cc; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 12px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #fff; padding-bottom: 50px; }
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 5px 20px; border-bottom: 2px solid #00a8cc; }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-size: 11px; color: #00264d; font-weight: bold; }
+        .nav-buttons a { text-decoration: none; padding: 6px 12px; font-size: 11px; font-weight: bold; border-radius: 3px; border: 1px solid #ccc; color: #333; margin-left: 5px; }
+        .nav-buttons .btn-dash { background: #f8f9fa; }
+        .nav-buttons .btn-pass { background: #f0ad4e; color: white; border-color: #eea236; }
+        .nav-buttons .btn-logout { background: #d9534f; color: white; border-color: #d43f3a; }
+        
+        .header-banner { display: flex; justify-content: flex-end; align-items: center; padding: 0 20px; }
+        .session-box { background: #00a8cc; color: white; padding: 15px 60px; font-size: 24px; font-weight: bold; }
+        .welcome-bar { background: #5bc0de; color: white; text-align: right; padding: 5px 20px; font-size: 12px; font-weight: bold; margin-bottom: 20px; }
+        
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .card { border: 1px solid #337ab7; border-radius: 4px; overflow: hidden; }
+        .card-header { background: #337ab7; color: white; padding: 10px 15px; font-size: 14px; font-weight: bold; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #1f4e79; color: white; padding: 10px; text-align: center; font-size: 13px; border: 1px solid #ddd; }
+        td { padding: 12px 10px; text-align: center; border: 1px solid #ddd; font-size: 13px; color: #333; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        
+        .btn-grade { background: #5bc0de; color: white; padding: 5px 12px; text-decoration: none; border-radius: 3px; font-size: 12px; display: inline-block; border: 1px solid #46b8da; }
+        .btn-grade:hover { background: #31b0d5; }
+        
+        .footer { background: #0080aa; color: white; padding: 10px 20px; display: flex; justify-content: space-between; font-size: 11px; position: fixed; bottom: 0; width: 100%; box-sizing: border-box; }
     </style>
 </head>
 <body>
-    <div class="header"><h2>Student Results Overview</h2></div>
-    <div class="container">
-        <h3>Registered Results List for: <%= student.student_name %></h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>SL. No</th>
-                    <th>Semester</th>
-                    <th>Publication Date</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% student.results.forEach((resItem, index) => { %>
+    <div class="top-nav">
+        <div class="logo-area">
+            <div>
+                Maulana Abul Kalam Azad University of Technology, West Bengal<br>
+                <span style="font-weight: normal; font-size: 9px; color: #666;">Formerly known as West Bengal University of Technology</span>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <a href="/smartexam/public/student/dashboard" class="btn-dash">🏠 DASHBOARD</a>
+            <a href="#" class="btn-pass">🔑 CHANGE PASSWORD</a>
+            <a href="/" class="btn-logout">⏻ LOGOUT</a>
+        </div>
+    </div>
+    <div class="header-banner">
+        <div style="font-size: 10px; color: #666; margin-right: 20px; text-align: right;">Helpline:<br>Email Id:</div>
+        <div class="session-box">2025-26</div>
+    </div>
+    <div class="welcome-bar">
+        Welcome <%= student.student_name %>
+    </div>
+    <div class="main-container">
+        <div class="card">
+            <div class="card-header">Student Results</div>
+            <table>
+                <thead>
                     <tr>
-                        <td><%= index + 1 %></td>
-                        <td><%= resItem.semester %></td>
-                        <td><%= resItem.pub_date %></td>
-                        <td><a href="#" class="btn-grade"><%= resItem.action_label %></a></td>
+                        <th>SL. No</th>
+                        <th>Semester</th>
+                        <th>Publication Date</th>
+                        <th></th>
                     </tr>
-                <% }) %>
-            </tbody>
-        </table>
-        <br>
-        <a href="/smartexam/public/student/dashboard" style="color: #004080; text-decoration: none;">&larr; Back to Dashboard</a>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>First Semester</td>
+                        <td>10-02-2025</td>
+                        <td><a href="/student/view-pdf" target="_blank" class="btn-grade">👁️ Grade Card</a></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Second Semester</td>
+                        <td>04-07-2025</td>
+                        <td><a href="/student/view-pdf" target="_blank" class="btn-grade">👁️ Grade Card</a></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Third Semester</td>
+                        <td>05-01-2026</td>
+                        <td><a href="/student/view-pdf" target="_blank" class="btn-grade">👁️ Grade Card</a></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Fourth Semester</td>
+                        <td>22-07-2026</td>
+                        <td><a href="/student/view-pdf" target="_blank" class="btn-grade">👁️ Grade Card</a></td>
+                    </tr>
+                    <tr>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td><a href="#" class="btn-grade">👁️ Provisional Certificate</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="footer">
+        <div>For the best view use Mozilla Firefox, Google Chrome browser</div>
+        <div>Copyright © 2026, Maulana Abul Kalam Azad University of Technology. All right reserved.</div>
     </div>
 </body>
 </html>
