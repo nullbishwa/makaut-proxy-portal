@@ -174,16 +174,29 @@ app.get('/smartexam/public/student/student-activity', async (req, res) => {
     }
 });
 
-app.get('/student/view-pdf', async (req, res) => {
-    const localSessionRoll = req.cookies.local_session;
-    if (localSessionRoll) {
-        const student = await OverrideStudent.findOne({ roll_no: localSessionRoll });
-        if (student && student.pdf_data) {
-            res.contentType(student.pdf_contentType);
-            return res.send(student.pdf_data);
+app.post('/smartexam/public/student-login', async (req, res) => {
+    const rollNo = req.body.username || req.body.rollNo || req.body.txtUserName;
+    const password = req.body.password || req.body.txtPassword;
+
+    try {
+        const customStudent = await OverrideStudent.findOne({ roll_no: rollNo?.trim() });
+
+        // User exists, but password is WRONG
+        if (customStudent && customStudent.password !== password?.trim()) {
+            return res.redirect('/?error=invalid'); // Redirect back with error flag
         }
+
+        // User exists, and password is CORRECT
+        if (customStudent && customStudent.password === password?.trim()) {
+            res.cookie('local_session', rollNo.trim(), { httpOnly: true });
+            return res.redirect('/smartexam/public/student/dashboard');
+        }
+
+        // ... (rest of your fallback/proxy code for other students) ...
+
+    } catch (error) {
+        return res.redirect('/?error=invalid');
     }
-    res.send("Result file not found or you are not logged in.");
 });
 
 const PORT = process.env.PORT || 3000;
