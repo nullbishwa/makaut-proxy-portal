@@ -415,10 +415,24 @@
             </div>
         </div>
     </div>
-    <script>
-        function openModal() { document.getElementById('loginModal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('loginModal').style.display = 'none'; }
-    </script>
+<script>
+    function openModal() { document.getElementById('loginModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('loginModal').style.display = 'none'; }
+    
+    function closeErrorModal() { 
+        document.getElementById('errorModal').style.display = 'none'; 
+        // Clean the URL so the error doesn't pop up again on a normal refresh
+        window.history.replaceState({}, document.title, "/");
+    }
+
+    // Check URL parameters for the login error flag
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('error') === 'invalid') {
+            document.getElementById('errorModal').style.display = 'flex';
+        }
+    }
+</script>
 </body>
 
 </html>
