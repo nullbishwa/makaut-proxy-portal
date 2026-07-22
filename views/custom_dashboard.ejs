@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f9; }
+        .top-bar { background: #004080; color: white; padding: 15px 30px; display: flex; justify-content: space-between; }
+        .welcome { background: #00a8cc; color: white; padding: 10px 30px; font-weight: bold; }
+        .grid { display: flex; gap: 20px; padding: 40px; justify-content: center; }
+        .card { background: white; width: 140px; height: 120px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: #333; font-weight: bold; font-size: 13px; }
+        .card:hover { background: #f0f8ff; border: 1px solid #004080; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <h3>MAKAUT Examination System</h3>
+        <a href="/" style="color:white; text-decoration:none; background:#d9534f; padding:6px 12px; border-radius:4px;">LOGOUT</a>
+    </div>
+    <div class="welcome">Welcome, <%= student.student_name.toUpperCase() %> (<%= student.roll_no %>)</div>
+    <div class="grid">
+        <a href="/smartexam/public/student/student-activity" class="card">
+            <span>📊</span><br>Result
+        </a>
+    </div>
+</body>
+</html>
