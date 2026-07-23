@@ -6,6 +6,15 @@ const multer = require('multer');
 
 const app = express();
 
+// --- FORCE NO-CACHE FOR ALL MOBILE & BROWSER CLIENTS ---
+app.use((req, res, next) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('Surrogate-Control', 'no-store');
+    next();
+});
+
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 app.use(express.static('public'));
