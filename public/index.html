@@ -46,6 +46,7 @@
             font-size: 16px;
             font-weight: bold;
             color: #444;
+            white-space: nowrap;
         }
 
         .main-container {
@@ -277,6 +278,31 @@
             font-size: 12px;
             font-weight: bold;
         }
+
+        /* --- RESPONSIVE MEDIA QUERIES FOR MOBILE --- */
+        @media screen and (max-width: 900px) {
+            .main-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .lower-section {
+                grid-template-columns: 1fr;
+            }
+            .modal-box {
+                width: 90% !important;
+                margin: 0 auto;
+            }
+        }
     </style>
 </head>
 
@@ -397,6 +423,7 @@
     <div class="footer">
         Maulana Abul Kalam Azad University of Technology Smart Examination System © 2026 - 2027
     </div>
+
     <!-- Custom Error Modal matching Screenshot 45 -->
     <div id="errorModal" class="modal-overlay" style="display: none; z-index: 9999;">
         <div class="modal-box" style="width: 450px; border-radius: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
@@ -416,17 +443,16 @@
             </div>
         </div>
     </div>
+
 <script>
     function openModal() { document.getElementById('loginModal').style.display = 'flex'; }
     function closeModal() { document.getElementById('loginModal').style.display = 'none'; }
     
     function closeErrorModal() { 
         document.getElementById('errorModal').style.display = 'none'; 
-        // Clean the URL so the error doesn't pop up again on a normal refresh
         window.history.replaceState({}, document.title, "/");
     }
 
-    // Check URL parameters for the login error flag
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('error') === 'invalid') {
