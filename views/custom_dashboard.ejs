@@ -7,8 +7,11 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #fff; padding-bottom: 60px; overflow-x: hidden; }
         .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 6px 15px; border-bottom: 2px solid #00a8cc; background: #fff; }
-        .logo-area { font-size: 10px; color: #00264d; font-weight: bold; line-height: 1.2; }
+        
+        .logo-area { display: flex; align-items: center; gap: 10px; font-size: 10px; color: #00264d; font-weight: bold; line-height: 1.2; }
+        .logo-area img { height: 35px; width: auto; object-fit: contain; }
         .logo-area span { font-weight: normal; font-size: 8px; color: #666; }
+
         .nav-buttons { display: flex; gap: 4px; }
         .nav-buttons a { text-decoration: none; padding: 4px 8px; font-size: 9px; font-weight: bold; border-radius: 3px; border: 1px solid #ccc; color: #333; white-space: nowrap; }
         .nav-buttons .btn-dash { background: #f8f9fa; }
@@ -84,8 +87,11 @@
 <body>
     <div class="top-nav">
         <div class="logo-area">
-            Maulana Abul Kalam Azad University of Technology, West Bengal<br>
-            <span>Formerly known as West Bengal University of Technology</span>
+            <img src="/logo.png" alt="MAKAUT Logo">
+            <div>
+                Maulana Abul Kalam Azad University of Technology, West Bengal<br>
+                <span>Formerly known as West Bengal University of Technology</span>
+            </div>
         </div>
         <div class="nav-buttons">
             <a href="#" class="btn-dash">DASHBOARD</a>
