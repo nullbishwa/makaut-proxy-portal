@@ -18,14 +18,29 @@
         .session-box { background: #00a8cc; color: white; padding: 10px 40px; font-size: 20px; font-weight: bold; }
         .welcome-bar { background: #5bc0de; color: white; text-align: right; padding: 5px 20px; font-size: 12px; font-weight: bold; margin-bottom: 20px; }
         
-        /* --- UPDATED TO 6 COLUMNS MATCHING OFFICIAL LAYOUT --- */
-        .main-content { display: flex; max-width: 1300px; margin: 0 auto; padding: 0 20px; gap: 20px; flex-wrap: wrap; }
-        .icons-grid { flex: 3; display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; min-width: 300px; }
+        /* --- EXACT 6-COLUMN DESKTOP STRUCTURE WITH HORIZONTAL SCROLL FOR MOBILE --- */
+        .main-content { 
+            display: flex; 
+            max-width: 1300px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+            gap: 20px; 
+            overflow-x: auto; /* Allows smooth horizontal sliding just like the official site */
+        }
+        
+        .icons-grid { 
+            flex: 3; 
+            display: grid; 
+            grid-template-columns: repeat(6, 1fr); 
+            gap: 15px; 
+            min-width: 750px; /* Keeps the exact 6-column layout intact */
+        }
+        
         .icon-card { text-align: center; text-decoration: none; color: #333; font-size: 10px; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
-        .icon-box { background: #00a8cc; width: 55px; height: 55px; margin: 0 auto 5px auto; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; box-shadow: 0 3px 6px rgba(0,0,0,0.16); transition: 0.2s; }
+        .icon-box { background: #00a8cc; width: 60px; height: 60px; margin: 0 auto 5px auto; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; box-shadow: 0 3px 6px rgba(0,0,0,0.16); transition: 0.2s; }
         .icon-card:hover .icon-box { transform: scale(1.05); }
         
-        .side-panels { flex: 1; display: flex; flex-direction: column; gap: 15px; min-width: 250px; }
+        .side-panels { flex: 1; display: flex; flex-direction: column; gap: 15px; min-width: 260px; }
         .panel { padding: 15px; border-radius: 4px; font-size: 12px; font-weight: bold; }
         .panel-red { background: #f9e2e2; color: #a94442; border: 1px solid #ebccd1; }
         .panel-green { background: #dff0d8; color: #3c763d; border: 1px solid #d6e9c6; }
@@ -33,17 +48,6 @@
         .online-exam-icon { background: #d9534f; width: 60px; height: 60px; margin: 0 auto 10px auto; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; }
         
         .footer { background: #0080aa; color: white; padding: 10px 20px; display: flex; justify-content: space-between; font-size: 11px; position: fixed; bottom: 0; width: 100%; box-sizing: border-box; flex-wrap: wrap; gap: 5px; z-index: 100; }
-
-        /* --- RESPONSIVE MEDIA QUERIES FOR MOBILE --- */
-        @media screen and (max-width: 900px) {
-            .icons-grid { grid-template-columns: repeat(3, 1fr); }
-            .main-content { flex-direction: column; }
-            .footer { position: relative; }
-        }
-
-        @media screen and (max-width: 500px) {
-            .icons-grid { grid-template-columns: repeat(2, 1fr); }
-        }
     </style>
 </head>
 <body>
