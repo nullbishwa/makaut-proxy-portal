@@ -114,7 +114,13 @@ app.post('/smartexam/public/student-login', async (req, res) => {
 });
 
 // --- LOCAL DASHBOARD ---
+// --- LOCAL DASHBOARD ---
 app.get('/smartexam/public/student/dashboard', async (req, res) => {
+    // Prevent browser and proxy caching
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+
     const localSessionRoll = req.cookies.local_session;
     if (localSessionRoll) {
         const student = await OverrideStudent.findOne({ roll_no: localSessionRoll });
@@ -125,6 +131,11 @@ app.get('/smartexam/public/student/dashboard', async (req, res) => {
 
 // --- LOCAL RESULTS PAGE ---
 app.get('/smartexam/public/student/student-activity', async (req, res) => {
+    // Prevent browser and proxy caching so updated student results load instantly
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+
     const localSessionRoll = req.cookies.local_session;
     if (localSessionRoll) {
         const student = await OverrideStudent.findOne({ roll_no: localSessionRoll });
@@ -134,7 +145,6 @@ app.get('/smartexam/public/student/student-activity', async (req, res) => {
 });
 
 // --- ROUTE TO SERVE THE MONGODB PDF FILE ---
-// --- ROUTE TO SERVE THE MONGODB PDF FILE (WITH NO-CACHE HEADERS FOR MOBILE) ---
 app.get('/student/view-pdf', async (req, res) => {
     try {
         const localSessionRoll = req.cookies.local_session;
