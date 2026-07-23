@@ -5,72 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - MAKAUT</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #fff; padding-bottom: 50px; }
-        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 5px 20px; border-bottom: 2px solid #00a8cc; flex-wrap: wrap; gap: 10px; }
-        .logo-area { display: flex; align-items: center; gap: 10px; font-size: 11px; color: #00264d; font-weight: bold; }
-        .nav-buttons { display: flex; gap: 5px; flex-wrap: wrap; }
-        .nav-buttons a { text-decoration: none; padding: 6px 12px; font-size: 11px; font-weight: bold; border-radius: 3px; border: 1px solid #ccc; color: #333; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #fff; padding-bottom: 60px; overflow-x: hidden; }
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 6px 15px; border-bottom: 2px solid #00a8cc; background: #fff; }
+        .logo-area { font-size: 10px; color: #00264d; font-weight: bold; line-height: 1.2; }
+        .logo-area span { font-weight: normal; font-size: 8px; color: #666; }
+        .nav-buttons { display: flex; gap: 4px; }
+        .nav-buttons a { text-decoration: none; padding: 4px 8px; font-size: 9px; font-weight: bold; border-radius: 3px; border: 1px solid #ccc; color: #333; white-space: nowrap; }
         .nav-buttons .btn-dash { background: #f8f9fa; }
         .nav-buttons .btn-pass { background: #f0ad4e; color: white; border-color: #eea236; }
         .nav-buttons .btn-logout { background: #d9534f; color: white; border-color: #d43f3a; }
         
-        .header-banner { display: flex; justify-content: flex-end; align-items: center; padding: 0 20px; }
-        .session-box { background: #00a8cc; color: white; padding: 10px 40px; font-size: 20px; font-weight: bold; }
-        .welcome-bar { background: #5bc0de; color: white; text-align: right; padding: 5px 20px; font-size: 12px; font-weight: bold; margin-bottom: 20px; }
+        .header-banner { display: flex; justify-content: space-between; align-items: center; background: #00a8cc; color: white; padding: 8px 15px; margin-top: 2px; }
+        .helpline-text { font-size: 9px; line-height: 1.2; }
+        .session-box { font-size: 18px; font-weight: bold; }
+        .welcome-bar { background: #5bc0de; color: white; text-align: right; padding: 4px 15px; font-size: 11px; font-weight: bold; margin-bottom: 15px; }
         
-        /* --- EXACT 6-COLUMN DESKTOP STRUCTURE WITH HORIZONTAL SCROLL FOR MOBILE --- */
-        .main-content { 
-            display: flex; 
-            max-width: 1300px; 
-            margin: 0 auto; 
-            padding: 0 20px; 
-            gap: 20px; 
-            overflow-x: auto; /* Allows smooth horizontal sliding just like the official site */
-        }
+        /* --- PERFECT FLUID MOBILE LAYOUT --- */
+        .main-content { display: flex; flex-direction: column; max-width: 1300px; margin: 0 auto; padding: 0 10px; gap: 15px; }
         
         .icons-grid { 
-            flex: 3; 
             display: grid; 
-            grid-template-columns: repeat(6, 1fr); 
-            gap: 15px; 
-            min-width: 750px; /* Keeps the exact 6-column layout intact */
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 8px; 
+            width: 100%;
         }
         
-        .icon-card { text-align: center; text-decoration: none; color: #333; font-size: 10px; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
-        .icon-box { background: #00a8cc; width: 60px; height: 60px; margin: 0 auto 5px auto; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; box-shadow: 0 3px 6px rgba(0,0,0,0.16); transition: 0.2s; }
-        .icon-card:hover .icon-box { transform: scale(1.05); }
+        .icon-card { 
+            text-align: center; 
+            text-decoration: none; 
+            color: #333; 
+            font-size: 9px; 
+            font-weight: 500;
+            cursor: pointer; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 6px 2px;
+        }
         
-        .side-panels { flex: 1; display: flex; flex-direction: column; gap: 15px; min-width: 260px; }
-        .panel { padding: 15px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .icon-box { 
+            background: #00a8cc; 
+            width: 38px; 
+            height: 38px; 
+            margin: 0 auto 4px auto; 
+            border-radius: 6px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-size: 16px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        }
+        
+        .side-panels { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 10px; }
+        .panel { padding: 10px; border-radius: 4px; font-size: 11px; font-weight: bold; text-align: center; }
         .panel-red { background: #f9e2e2; color: #a94442; border: 1px solid #ebccd1; }
         .panel-green { background: #dff0d8; color: #3c763d; border: 1px solid #d6e9c6; }
-        .online-exam-box { text-align: center; margin: 10px 0; }
-        .online-exam-icon { background: #d9534f; width: 60px; height: 60px; margin: 0 auto 10px auto; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; }
         
-        .footer { background: #0080aa; color: white; padding: 10px 20px; display: flex; justify-content: space-between; font-size: 11px; position: fixed; bottom: 0; width: 100%; box-sizing: border-box; flex-wrap: wrap; gap: 5px; z-index: 100; }
+        .online-exam-box { text-align: center; margin: 5px auto; }
+        .online-exam-icon { background: #d9534f; width: 50px; height: 50px; margin: 0 auto 5px auto; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+        
+        .footer { background: #0080aa; color: white; padding: 8px 10px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; text-align: center; position: fixed; bottom: 0; width: 100%; box-sizing: border-box; z-index: 100; }
+
+        /* Tablet & Desktop scaling */
+        @media screen and (min-width: 768px) {
+            .main-content { flex-direction: row; padding: 0 20px; }
+            .icons-grid { grid-template-columns: repeat(6, 1fr); flex: 3; gap: 15px; }
+            .side-panels { flex: 1; margin-top: 0; }
+            .icon-card { font-size: 10px; padding: 10px; }
+            .icon-box { width: 55px; height: 55px; font-size: 22px; }
+            .footer { flex-direction: row; justify-content: space-between; font-size: 11px; padding: 10px 20px; }
+        }
     </style>
 </head>
 <body>
     <div class="top-nav">
         <div class="logo-area">
-            <div>
-                Maulana Abul Kalam Azad University of Technology, West Bengal<br>
-                <span style="font-weight: normal; font-size: 9px; color: #666;">Formerly known as West Bengal University of Technology</span>
-            </div>
+            Maulana Abul Kalam Azad University of Technology, West Bengal<br>
+            <span>Formerly known as West Bengal University of Technology</span>
         </div>
         <div class="nav-buttons">
-            <a href="#" class="btn-dash">🏠 DASHBOARD</a>
-            <a href="#" class="btn-pass">🔑 CHANGE PASSWORD</a>
-            <a href="/" class="btn-logout">⏻ LOGOUT</a>
+            <a href="#" class="btn-dash">DASHBOARD</a>
+            <a href="#" class="btn-pass">CHANGE PASSWORD</a>
+            <a href="/" class="btn-logout">LOGOUT</a>
         </div>
     </div>
+
     <div class="header-banner">
-        <div style="font-size: 10px; color: #666; margin-right: 20px; text-align: right;">Helpline:<br>Email Id:</div>
+        <div class="helpline-text">Helpline:<br>Email Id:</div>
         <div class="session-box">2025-26</div>
     </div>
+
     <div class="welcome-bar">
         Welcome <%= student.student_name %>
     </div>
+
     <div class="main-content">
         <div class="icons-grid">
             <a href="#" class="icon-card"><div class="icon-box">📄</div>Regular Enrollment Form</a>
@@ -100,6 +132,7 @@
             <a href="#" class="icon-card"><div class="icon-box">👁️</div>Form Preview</a>
             <a href="#" class="icon-card"><div class="icon-box">💸</div>Make Payment</a>
         </div>
+
         <div class="side-panels">
             <div class="panel panel-red">
                 For Payment Issues Call : +91 8282071882<br>
@@ -107,7 +140,7 @@
             </div>
             <div class="online-exam-box">
                 <div class="online-exam-icon">📄</div>
-                <div style="font-size: 11px; font-weight: bold;">ONLINE EXAM</div>
+                <div style="font-size: 11px; font-weight: bold; color: #333;">ONLINE EXAM</div>
             </div>
             <div class="panel panel-green">
                 Upload accurate details as this Photo may be used for generating your Admit Card, Grade Cards, Certificate etc.<br>
@@ -115,6 +148,7 @@
             </div>
         </div>
     </div>
+
     <div class="footer">
         <div>For the best view use Mozilla Firefox, Google Chrome browser</div>
         <div>Copyright © 2026, Maulana Abul Kalam Azad University of Technology. All right reserved.</div>
