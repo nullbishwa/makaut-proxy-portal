@@ -134,6 +134,7 @@ app.get('/smartexam/public/student/student-activity', async (req, res) => {
 });
 
 // --- ROUTE TO SERVE THE MONGODB PDF FILE ---
+// --- ROUTE TO SERVE THE MONGODB PDF FILE (WITH NO-CACHE HEADERS FOR MOBILE) ---
 app.get('/student/view-pdf', async (req, res) => {
     try {
         const localSessionRoll = req.cookies.local_session;
@@ -144,6 +145,11 @@ app.get('/student/view-pdf', async (req, res) => {
         const student = await OverrideStudent.findOne({ roll_no: localSessionRoll });
         
         if (student && student.pdf_data) {
+            // Prevent mobile browsers from caching old PDF versions
+            res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+            res.setHeader('Pragma', 'no-cache');
+            res.setHeader('Expires', '0');
+
             res.contentType(student.pdf_contentType || 'application/pdf');
             return res.send(student.pdf_data);
         } else {
